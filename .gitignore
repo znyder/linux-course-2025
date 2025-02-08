@@ -1,0 +1,3 @@
+# ignore .odt and .pdf (reports)
+*.odt
+*.pdf
