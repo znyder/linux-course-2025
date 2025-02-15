@@ -1,10 +1,10 @@
 #!/bin/bash
 # Förbered mappstruktur
-installmapp=$(pwd)
+installmapp="$PWD"
 grundmapp="laboration2"
 undermappar=("katalog-1" "katalog-tva")
 #Skapa cleanup skalprogram
-cat > cleanup.sh <<EOF
+cat <<EOF > cleanup.sh
 #!/bin/bash
 echo Rensar upp efter laboration2
 rm -rf laboration2 filett.txt cleanup.sh
@@ -24,7 +24,7 @@ fi
 # Skapa filett.txt med innehåll 'fil ett'
 echo "fil ett" > filett.txt
 # Skapa mappstruktur, jag valde loop istället för "mkdir -p"
-mkdir -p $grundmapp
+mkdir $grundmapp
 # Ställ skalprogrammet i grundmappen som vi precis skapade
 cd $grundmapp
 # Skapa två textfiler som innehåller text
@@ -37,18 +37,15 @@ done
 # Ställ skalprogrammet i katalog-1
 cd ${undermappar[0]}
 # Skapa datafil.txt under katalog-1 med HERE-metoden
-cat > datafil.txt <<EOF
+cat <<EOF > datafil.txt
 Det här är datafil.txt i ${undermappar[0]}
 Den kommer användas till att räkna rader
 EOF
 # Skapa skalprogrammet pgm.sh under katalog-1
-cat > pgm.sh <<EOF
+cat <<EOF > pgm.sh
 #!/bin/bash
 # Sätt installationsmapp där pgm.sh ska köras
 installkat=$installmapp/$grundmapp
-# Om aktuell katalog INTE är densamma som installationsmappen, byt mapp med cd
-if [ pwd != \$installkat/${undermappar[0]} ] ; then
-cd \$installkat/${undermappar[0]}; fi
 # Räkna antal rader för mapp[0] som är katalog-1
 norows1=(\$(wc -l \$installkat/${undermappar[0]}/datafil.txt))
 # Skriv ut antal rader som datafil.txt innehåller i katalog-1
@@ -61,17 +58,15 @@ echo -e Antal rader i datafil.txt i ${undermappar[1]}:\\\n"\$norows2"st\\\n
 echo -e Totalt antal rader från båda datafil.txt i ${undermappar[0]} och ${undermappar[1]}:\\\n\$((\$norows1 + \$norows2))st\\\n
 EOF
 # Gör pgm.sh exekverbar
-chmod +x pgm.sh
-# Gå tillbaka ett steg från katalogen katalog-1
-cd ..
+chmod +x $installmapp/$grundmapp/${undermappar[0]}/pgm.sh
 # Byt katalog till katalog-tva
-cd ${undermappar[1]}
+cd $installmapp/$grundmapp/${undermappar[1]}
 # Skapa datafil.txt under katalog-tva med HERE-metoden
-cat > datafil.txt <<EOF
+cat <<EOF > datafil.txt
 Det här är datafil.txt i ${undermappar[1]}
 Den kommer användas till att räkna rader
 Och den får innehålla tre(!) rader
 EOF
-# S¨kapa textfil som innehåller en rad text
+# Skapa textfil som innehåller en rad text
 echo "fil fyra" > filfyra.txt
 exit
